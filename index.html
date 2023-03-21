@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FC Emulator</title>
+</head>
+<body>
+    <div>
+        <label for="id-rom">ROM</label>
+        <input
+            type="file"
+            id="id-rom"
+            name="rom"
+        >
+    </div>
+    <canvas
+        id="id-canvas"
+        style="border: 1px solid black"
+        width="600px"
+        height="600px"
+    ></canvas>
+    <script type="text/javascript" src="./utils.js"></script>
+    <script type="text/javascript" src="cartridge.js"></script>
+    <script type="text/javascript" src="opcodes.js"></script>
+    <script type="text/javascript" src="dataBus.js"></script>
+    <script type="text/javascript" src="cpu.js"></script>
+    <script type="text/javascript" src="ppu.js"></script>
+    <script type="text/javascript" src="famicom.js"></script>
+    <script type="text/javascript" src="./bindEvents.js"></script>
+    <script type="text/javascript" src="./main.js"></script>
+    <!--    <script type="text/javascript" src="./test/testUtils.js"></script>-->
+    <!--    <script type="text/javascript" src="./test/testCPU.js"></script>-->
+    <!--    <script type="text/javascript" src="./test/testInstructions.js"></script>-->
+    <!--    <script type="text/javascript" src="./test/testGame.js"></script>-->
+    <script type="text/javascript" src="./test/testPPU.js"></script>
+    <script>
+        main()
+    </script>
+</body>
+</html>
