@@ -6,8 +6,8 @@ const isEven = function(number) {
 }
 
 // 固定长度字符串，不足补空格
-const stringFixedLength = function(str, length) {
-    let s = new String(str)
+export const stringFixedLength = function (str: string, length: number) {
+    let s = String(str)
     if (str.length < length) {
         for (let i = 0; i < (length - str.length); i++) {
             s += ' '
@@ -56,7 +56,7 @@ const getBitFromByte = function(byte, bitPosition) {
     return bit
 }
 
-const binaryStringFromNumber = function(num) {
+export const binaryStringFromNumber = function (num: string | number) {
     let numStr = Number(num).toString(2)
     let l = 8 - numStr.length
     for (let i = 0; i < l; i++) {
@@ -66,7 +66,7 @@ const binaryStringFromNumber = function(num) {
     return numStr
 }
 
-const hexStringFromNumber = function(num) {
+export const hexStringFromNumber = function (num: number) {
     let numStr = Number(num).toString(16)
     if (isEven(numStr.length)) {
         numStr = '0x' + numStr
@@ -87,7 +87,7 @@ const byteTrimmed = function(value) {
     }
 }
 
-const signedNumberFromByte = function(byte) {
+export const signedNumberFromByte = function (byte) {
     if (byte > 127) {
         // 处理负数
         let v = 0x100 - byte
@@ -100,7 +100,7 @@ const signedNumberFromByte = function(byte) {
 
 // 把负数(10进制)变成binary对应的正数
 // positive = ~negative + 1
-const positiveByteFromMinus = function(value) {
+export const positiveByteFromMinus = function (value) {
     if (value === 0) {
         return 0
     }
