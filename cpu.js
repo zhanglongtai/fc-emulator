@@ -74,7 +74,7 @@ class CPU {
         }
     }
 
-    setMemoryBlock(data, index) {
+    setMemoryBlock(index, data) {
         // let l = data.length
         // let m1 = this.memory.slice(0, index)
         // let m2 = this.memory.slice(index + l)

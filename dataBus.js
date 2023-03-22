@@ -96,7 +96,7 @@ class DataBus {
         if (ppuRegisterAddress.includes(address)) {
             this.writePPU(address, data)
         } else {
-            this.setMemory(Hardware.CPU, data, address)
+            this.setMemory(Hardware.CPU, address, data)
         }
     }
     readCPU(address) {

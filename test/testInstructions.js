@@ -81,9 +81,15 @@ const setAbsoluteX = function(codes, cpu) {
     return 0x241A
 }
 
+const getCPUInstance = function() {
+    let dataBus = DataBus.new()
+    let cpu = CPU.new(dataBus)
+    return cpu
+}
+
 // BRK Implied
 const test0x00 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x00]
     cpu.loadROM(codes)
@@ -114,7 +120,7 @@ const test0x00 = function() {
 
 // ORA IndexedIndirectX
 const test0x01 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x01, 0x3E]
     cpu.loadROM(codes)
@@ -197,7 +203,7 @@ const test0x01 = function() {
 
 // ORA ZeroPage
 const test0x05 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x05, 0x3E]
     cpu.loadROM(codes)
@@ -270,7 +276,7 @@ const test0x05 = function() {
 
 // ASL ZeroPage
 const test0x06 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x06, 0x3E]
     cpu.loadROM(codes)
@@ -317,7 +323,7 @@ const test0x06 = function() {
 
 // PHP Implied
 const test0x08 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x08]
     cpu.loadROM(codes)
@@ -338,7 +344,7 @@ const test0x08 = function() {
 
 // ORA Immediate
 const test0x09 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     // 最后和A比较的值为0x6E
     let v = 0x6E
@@ -408,7 +414,7 @@ const test0x09 = function() {
 
 // ASL Accumulator
 const test0x0A = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x0A]
     cpu.loadROM(codes)
@@ -455,7 +461,7 @@ const test0x0A = function() {
 
 // ORA Absolute
 const test0x0D = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x0D, 0x15, 0x24]
     cpu.loadROM(codes)
@@ -528,7 +534,7 @@ const test0x0D = function() {
 
 // ASL Absolute
 const test0x0E = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x0E, 0x15, 0x24]
     cpu.loadROM(codes)
@@ -575,7 +581,7 @@ const test0x0E = function() {
 
 // BPL Relative
 const test0x10 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0x10
 
     // 不跳转
@@ -628,7 +634,7 @@ const test0x10 = function() {
 
 // ORA IndirectIndexedY
 const test0x11 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let address = 0x4C
     let codes = [0x11, address]
@@ -716,7 +722,7 @@ const test0x11 = function() {
 
 // ORA ZeroPageX
 const test0x15 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x15, 0x3E]
     cpu.loadROM(codes)
@@ -793,7 +799,7 @@ const test0x15 = function() {
 
 // ASL ZeroPageX
 const test0x16 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x16, 0x3E]
     cpu.loadROM(codes)
@@ -843,7 +849,7 @@ const test0x16 = function() {
 
 // CLC Implied
 const test0x18 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x18]
     cpu.loadROM(codes)
@@ -875,7 +881,7 @@ const test0x18 = function() {
 
 // ORA AbsoluteY
 const test0x19 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x19, 0x15, 0x24]
     cpu.loadROM(codes)
@@ -954,7 +960,7 @@ const test0x19 = function() {
 
 // ORA AbsoluteX
 const test0x1D = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x1D, 0x15, 0x24]
     cpu.loadROM(codes)
@@ -1033,7 +1039,7 @@ const test0x1D = function() {
 
 // ASL AbsoluteX
 const test0x1E = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x1E, 0x15, 0x24]
     cpu.loadROM(codes)
@@ -1083,7 +1089,7 @@ const test0x1E = function() {
 
 // JSR Absolute
 const test0x20 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x20, 0x15, 0x24]
     cpu.loadROM(codes)
@@ -1105,7 +1111,7 @@ const test0x20 = function() {
 
 // AND IndexedIndirectX
 const test0x21 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x21, 0x3E]
     cpu.loadROM(codes)
@@ -1188,7 +1194,7 @@ const test0x21 = function() {
 
 // BIT ZeroPage
 const test0x24 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x24, 0x3E]
     cpu.loadROM(codes)
@@ -1261,7 +1267,7 @@ const test0x24 = function() {
 
 // AND ZeroPage
 const test0x25 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x25, 0x3E]
     cpu.loadROM(codes)
@@ -1334,7 +1340,7 @@ const test0x25 = function() {
 
 // ROL ZeroPage
 const test0x26 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x26, 0x3E]
     cpu.loadROM(codes)
@@ -1404,7 +1410,7 @@ const test0x26 = function() {
 
 // PLP Implied
 const test0x28 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x28]
     cpu.loadROM(codes)
@@ -1424,7 +1430,7 @@ const test0x28 = function() {
 
 // AND Immediate
 const test0x29 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     // 最后和A比较的值为0x6E
     let v = 0x6E
@@ -1494,7 +1500,7 @@ const test0x29 = function() {
 
 // ROL Accumulator
 const test0x2A = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x2A]
     cpu.loadROM(codes)
@@ -1564,7 +1570,7 @@ const test0x2A = function() {
 
 // BIT Absolute
 const test0x2C = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x2C, 0x15, 0x24]
     cpu.loadROM(codes)
@@ -1637,7 +1643,7 @@ const test0x2C = function() {
 
 // AND Absolute
 const test0x2D = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x2D, 0x15, 0x24]
     cpu.loadROM(codes)
@@ -1710,7 +1716,7 @@ const test0x2D = function() {
 
 // ROL Absolute
 const test0x2E = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x2E, 0x15, 0x24]
     cpu.loadROM(codes)
@@ -1780,7 +1786,7 @@ const test0x2E = function() {
 
 // BMI Relative
 const test0x30 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0x30
 
     // 不跳转
@@ -1833,7 +1839,7 @@ const test0x30 = function() {
 
 // AND IndirectIndexedY
 const test0x31 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let address = 0x4C
     let codes = [0x31, address]
@@ -1921,7 +1927,7 @@ const test0x31 = function() {
 
 // AND ZeroPageX
 const test0x35 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x35, 0x3E]
     cpu.loadROM(codes)
@@ -2000,7 +2006,7 @@ const test0x35 = function() {
 
 // ROL ZeroPageX
 const test0x36 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x36, 0x3E]
     cpu.loadROM(codes)
@@ -2076,7 +2082,7 @@ const test0x36 = function() {
 
 // SEC Implied
 const test0x38 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x38]
     cpu.loadROM(codes)
@@ -2108,7 +2114,7 @@ const test0x38 = function() {
 
 // AND AbsoluteY
 const test0x39 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x39, 0x15, 0x24]
     cpu.loadROM(codes)
@@ -2187,7 +2193,7 @@ const test0x39 = function() {
 
 // AND AbsoluteX
 const test0x3D = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x3D, 0x15, 0x24]
     cpu.loadROM(codes)
@@ -2266,7 +2272,7 @@ const test0x3D = function() {
 
 // ROL AbsoluteX
 const test0x3E = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x3E, 0x15, 0x24]
     cpu.loadROM(codes)
@@ -2342,7 +2348,7 @@ const test0x3E = function() {
 
 // RTI Implied
 const test0x40 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x40]
     cpu.loadROM(codes)
@@ -2365,7 +2371,7 @@ const test0x40 = function() {
 
 // EOR IndexedIndirectX
 const test0x41 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x41, 0x3E]
     cpu.loadROM(codes)
@@ -2448,7 +2454,7 @@ const test0x41 = function() {
 
 // EOR ZeroPage
 const test0x45 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x45, 0x3E]
     cpu.loadROM(codes)
@@ -2521,7 +2527,7 @@ const test0x45 = function() {
 
 // LSR ZeroPage
 const test0x46 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x46, 0x3E]
     cpu.loadROM(codes)
@@ -2567,7 +2573,7 @@ const test0x46 = function() {
 
 // PHA Implied
 const test0x48 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x48]
     cpu.loadROM(codes)
@@ -2586,7 +2592,7 @@ const test0x48 = function() {
 
 // EOR Immediate
 const test0x49 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     // 最后和A比较的值为0x3E
     let v = 0x6E
@@ -2655,7 +2661,7 @@ const test0x49 = function() {
 
 // LSR Accumulator
 const test0x4A = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x4A]
     cpu.loadROM(codes)
@@ -2701,7 +2707,7 @@ const test0x4A = function() {
 
 // JMP Absolute
 const test0x4C = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x4C, 0x15, 0x24]
     cpu.loadROM(codes)
@@ -2718,7 +2724,7 @@ const test0x4C = function() {
 
 // EOR Absolute
 const test0x4D = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x4D, 0x15, 0x24]
     cpu.loadROM(codes)
@@ -2791,7 +2797,7 @@ const test0x4D = function() {
 
 // LSR Absolute
 const test0x4E = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x4E, 0x15, 0x24]
     cpu.loadROM(codes)
@@ -2837,7 +2843,7 @@ const test0x4E = function() {
 
 // BVC Relative
 const test0x50 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0x50
 
     // 不跳转
@@ -2890,7 +2896,7 @@ const test0x50 = function() {
 
 // EOR IndirectIndexedY
 const test0x51 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let address = 0x4C
     let codes = [0x51, address]
@@ -2978,7 +2984,7 @@ const test0x51 = function() {
 
 // EOR ZeroPageX
 const test0x55 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x55, 0x3E]
     cpu.loadROM(codes)
@@ -3057,7 +3063,7 @@ const test0x55 = function() {
 
 // LSR ZeroPageX
 const test0x56 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x56, 0x3E]
     cpu.loadROM(codes)
@@ -3107,7 +3113,7 @@ const test0x56 = function() {
 
 // CLI Implied
 const test0x58 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x58]
     cpu.loadROM(codes)
@@ -3125,7 +3131,7 @@ const test0x58 = function() {
 
 // EOR AbsoluteY
 const test0x59 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x59, 0x15, 0x24]
     cpu.loadROM(codes)
@@ -3204,7 +3210,7 @@ const test0x59 = function() {
 
 // EOR AbsoluteX
 const test0x5D = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x5D, 0x15, 0x24]
     cpu.loadROM(codes)
@@ -3283,7 +3289,7 @@ const test0x5D = function() {
 
 // LSR AbsoluteX
 const test0x5E = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x5E, 0x15, 0x24]
     cpu.loadROM(codes)
@@ -3333,7 +3339,7 @@ const test0x5E = function() {
 
 // RTS Implied
 const test0x60 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x60]
     cpu.loadROM(codes)
@@ -3352,7 +3358,7 @@ const test0x60 = function() {
 
 // ADC IndexedIndirectX
 const test0x61 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x61]
     let address = setIndexedIndirectX(codes, cpu)
@@ -3625,7 +3631,7 @@ const test0x61 = function() {
 
 // ADC ZeroPage
 const test0x65 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x65]
     let address = setZeroPage(codes, cpu)
@@ -3898,7 +3904,7 @@ const test0x65 = function() {
 
 // ROR ZeroPage
 const test0x66 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0x66
     let codes = [opcode]
     let address = setZeroPage(codes, cpu)
@@ -3970,7 +3976,7 @@ const test0x66 = function() {
 
 // PLA Implied
 const test0x68 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0x68
 
     let codes = [opcode]
@@ -4014,7 +4020,7 @@ const test0x68 = function() {
 
 // ADC Immediate
 const test0x69 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0x69
 
     let codes = [opcode]
@@ -4279,7 +4285,7 @@ const test0x69 = function() {
 
 // ROR Accumulator
 const test0x6A = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0x6A
     let codes = [opcode]
 
@@ -4348,7 +4354,7 @@ const test0x6A = function() {
 
 // JMP Indirect
 const test0x6C = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0x6C
 
     let codes = [opcode]
@@ -4367,7 +4373,7 @@ const test0x6C = function() {
 
 // ADC Absolute
 const test0x6D = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0x6D
 
     let codes = [opcode]
@@ -4641,7 +4647,7 @@ const test0x6D = function() {
 
 // ROR Absolute
 const test0x6E = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0x6E
 
     let codes = [opcode]
@@ -4713,7 +4719,7 @@ const test0x6E = function() {
 
 // BVS Relative
 const test0x70 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0x70
 
     // 不跳转
@@ -4766,7 +4772,7 @@ const test0x70 = function() {
 
 // ADC IndirectIndexedY
 const test0x71 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0x71
 
     let codes = [opcode]
@@ -5040,7 +5046,7 @@ const test0x71 = function() {
 
 // ADC ZeroPageX
 const test0x75 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0x75
 
     let codes = [opcode]
@@ -5314,7 +5320,7 @@ const test0x75 = function() {
 
 // ROR ZeroPageX
 const test0x76 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0x76
 
     let codes = [opcode]
@@ -5388,7 +5394,7 @@ const test0x76 = function() {
 
 // SEI Implied
 const test0x78 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0x78]
     cpu.loadROM(codes)
@@ -5406,7 +5412,7 @@ const test0x78 = function() {
 
 // ADC AbsoluteY
 const test0x79 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0x79
     const addressFunc =  setAbsoluteY
 
@@ -5681,7 +5687,7 @@ const test0x79 = function() {
 
 // ADC AbsoluteX
 const test0x7D = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0x7D
     const addressFunc =  setAbsoluteX
 
@@ -5956,7 +5962,7 @@ const test0x7D = function() {
 
 // ROR AbsoluteX
 const test0x7E = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0x7E
     let addressFunc = setAbsoluteX
 
@@ -6031,7 +6037,7 @@ const test0x7E = function() {
 
 // STA IndexedIndirectX
 const test0x81 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0x81
     let addressFunc = setIndexedIndirectX
 
@@ -6053,7 +6059,7 @@ const test0x81 = function() {
 
 // STY ZeroPage
 const test0x84 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0x84
     let addressFunc = setZeroPage
 
@@ -6075,7 +6081,7 @@ const test0x84 = function() {
 
 // STA ZeroPage
 const test0x85 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0x85
     let addressFunc = setZeroPage
 
@@ -6097,7 +6103,7 @@ const test0x85 = function() {
 
 // STX ZeroPage
 const test0x86 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0x86
     let addressFunc = setZeroPage
 
@@ -6119,7 +6125,7 @@ const test0x86 = function() {
 
 // DEY Implied
 const test0x88 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0x88
 
     let codes = [opcode]
@@ -6162,7 +6168,7 @@ const test0x88 = function() {
 
 // TXA Implied
 const test0x8A = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0x8A
 
     let codes = [opcode]
@@ -6186,7 +6192,7 @@ const test0x8A = function() {
 
 // STY Absolute
 const test0x8C = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0x8C
     let addressFunc = setAbsolute
 
@@ -6208,7 +6214,7 @@ const test0x8C = function() {
 
 // STA Absolute
 const test0x8D = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0x8D
     let addressFunc = setAbsolute
 
@@ -6230,7 +6236,7 @@ const test0x8D = function() {
 
 // STX Absolute
 const test0x8E = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0x8E
     let addressFunc = setAbsolute
 
@@ -6252,7 +6258,7 @@ const test0x8E = function() {
 
 // BCC Relative
 const test0x90 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0x90
     let addressFunc = setRelativeBackwards
 
@@ -6306,7 +6312,7 @@ const test0x90 = function() {
 
 // STA IndirectIndexedY
 const test0x91 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0x91
     let addressFunc = setIndirectIndexedY
 
@@ -6328,7 +6334,7 @@ const test0x91 = function() {
 
 // STY ZeroPageX
 const test0x94 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0x94
     let addressFunc = setZeroPageX
 
@@ -6350,7 +6356,7 @@ const test0x94 = function() {
 
 // STA ZeroPageX
 const test0x95 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0x95
     let addressFunc = setZeroPageX
 
@@ -6372,7 +6378,7 @@ const test0x95 = function() {
 
 // STX ZeroPageY
 const test0x96 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0x96
     let addressFunc = setZeroPageY
 
@@ -6394,7 +6400,7 @@ const test0x96 = function() {
 
 // TYA Implied
 const test0x98 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0x98
 
     let codes = [opcode]
@@ -6418,7 +6424,7 @@ const test0x98 = function() {
 
 // STA AbsoluteY
 const test0x99 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0x99
     let addressFunc = setAbsoluteY
 
@@ -6440,7 +6446,7 @@ const test0x99 = function() {
 
 // TXS Implied
 const test0x9A = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0x9A
 
     let codes = [opcode]
@@ -6460,7 +6466,7 @@ const test0x9A = function() {
 
 // STA AbsoluteX
 const test0x9D = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0x9D
     let addressFunc = setAbsoluteX
 
@@ -6482,7 +6488,7 @@ const test0x9D = function() {
 
 // LDY Immediate
 const test0xA0 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xA0
 
     let codes = [opcode]
@@ -6544,7 +6550,7 @@ const test0xA0 = function() {
 
 // LDA IndexedIndirectX
 const test0xA1 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xA1
     const addressFunc = setIndexedIndirectX
 
@@ -6610,7 +6616,7 @@ const test0xA1 = function() {
 
 // LDX Immediate
 const test0xA2 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xA2
 
     let codes = [opcode]
@@ -6672,7 +6678,7 @@ const test0xA2 = function() {
 
 // LDY ZeroPage
 const test0xA4 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xA4
     const addressFunc = setZeroPage
 
@@ -6738,7 +6744,7 @@ const test0xA4 = function() {
 
 // LDA ZeroPage
 const test0xA5 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xA5
     const addressFunc = setZeroPage
 
@@ -6804,7 +6810,7 @@ const test0xA5 = function() {
 
 // LDX ZeroPage
 const test0xA6 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xA6
     const addressFunc = setZeroPage
 
@@ -6870,7 +6876,7 @@ const test0xA6 = function() {
 
 // TAY Implied
 const test0xA8 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xA8
 
     let codes = [opcode]
@@ -6894,7 +6900,7 @@ const test0xA8 = function() {
 
 // LDA Immediate
 const test0xA9 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xA9
 
     let codes = [opcode]
@@ -6956,7 +6962,7 @@ const test0xA9 = function() {
 
 // TAX Implied
 const test0xAA = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xAA
 
     let codes = [opcode]
@@ -6980,7 +6986,7 @@ const test0xAA = function() {
 
 // LDY Absolute
 const test0xAC = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xAC
     const addressFunc = setAbsolute
 
@@ -7046,7 +7052,7 @@ const test0xAC = function() {
 
 // LDA Absolute
 const test0xAD = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xAD
     const addressFunc = setAbsolute
 
@@ -7112,7 +7118,7 @@ const test0xAD = function() {
 
 // LDX Absolute
 const test0xAE = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xAE
     const addressFunc = setAbsolute
 
@@ -7178,7 +7184,7 @@ const test0xAE = function() {
 
 // BCS Relative
 const test0xB0 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xB0
     let addressFunc = setRelativeBackwards
 
@@ -7232,7 +7238,7 @@ const test0xB0 = function() {
 
 // LDA IndirectIndexedY
 const test0xB1 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xB1
     const addressFunc = setIndirectIndexedY
 
@@ -7298,7 +7304,7 @@ const test0xB1 = function() {
 
 // LDY ZeroPageX
 const test0xB4 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xB4
     const addressFunc = setZeroPageX
 
@@ -7364,7 +7370,7 @@ const test0xB4 = function() {
 
 // LDA ZeroPageX
 const test0xB5 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xB5
     const addressFunc = setZeroPageX
 
@@ -7430,7 +7436,7 @@ const test0xB5 = function() {
 
 // LDX ZeroPageY
 const test0xB6 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xB6
     const addressFunc = setZeroPageY
 
@@ -7496,7 +7502,7 @@ const test0xB6 = function() {
 
 // CLV Implied
 const test0xB8 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xB8
 
     let codes = [opcode]
@@ -7515,7 +7521,7 @@ const test0xB8 = function() {
 
 // LDA AbsoluteY
 const test0xB9 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xB9
     const addressFunc = setAbsoluteY
 
@@ -7581,7 +7587,7 @@ const test0xB9 = function() {
 
 // TSX Implied
 const test0xBA = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xBA
 
     let codes = [opcode]
@@ -7601,7 +7607,7 @@ const test0xBA = function() {
 
 // LDY AbsoluteX
 const test0xBC = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xBC
     const addressFunc = setAbsoluteX
 
@@ -7667,7 +7673,7 @@ const test0xBC = function() {
 
 // LDA AbsoluteX
 const test0xBD = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xBD
     const addressFunc = setAbsoluteX
 
@@ -7733,7 +7739,7 @@ const test0xBD = function() {
 
 // LDX AbsoluteY
 const test0xBE = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xBE
     const addressFunc = setAbsoluteY
 
@@ -7799,7 +7805,7 @@ const test0xBE = function() {
 
 // CPY Immediate
 const test0xC0 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xC0
 
     let codes = [opcode]
@@ -7864,7 +7870,7 @@ const test0xC0 = function() {
 
 // CMP IndexedIndirectX
 const test0xC1 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xC1
     const addressFunc = setIndexedIndirectX
 
@@ -7933,7 +7939,7 @@ const test0xC1 = function() {
 
 // CPY ZeroPage
 const test0xC4 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xC4
     const addressFunc = setZeroPage
 
@@ -8002,7 +8008,7 @@ const test0xC4 = function() {
 
 // CMP ZeroPage
 const test0xC5 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xC5
     const addressFunc = setZeroPage
 
@@ -8071,7 +8077,7 @@ const test0xC5 = function() {
 
 // DEC ZeroPage
 const test0xC6 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xC6
     const addressFunc = setZeroPage
 
@@ -8117,7 +8123,7 @@ const test0xC6 = function() {
 
 // INY Implied
 const test0xC8 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xC8
 
     let codes = [opcode]
@@ -8160,7 +8166,7 @@ const test0xC8 = function() {
 
 // CMP Immediate
 const test0xC9 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xC9
 
     let codes = [opcode]
@@ -8225,7 +8231,7 @@ const test0xC9 = function() {
 
 // DEX Implied
 const test0xCA = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xCA
 
     let codes = [opcode]
@@ -8268,7 +8274,7 @@ const test0xCA = function() {
 
 // CPY Absolute
 const test0xCC = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xCC
     const addressFunc = setAbsolute
 
@@ -8337,7 +8343,7 @@ const test0xCC = function() {
 
 // CMP Absolute
 const test0xCD = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xCD
     const addressFunc = setAbsolute
 
@@ -8406,7 +8412,7 @@ const test0xCD = function() {
 
 // DEC Absolute
 const test0xCE = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xCE
     const addressFunc = setAbsolute
 
@@ -8452,7 +8458,7 @@ const test0xCE = function() {
 
 // BNE Relative
 const test0xD0 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xD0
 
     // 不跳转
@@ -8505,7 +8511,7 @@ const test0xD0 = function() {
 
 // CMP IndirectIndexedY
 const test0xD1 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xD1
     const addressFunc = setIndirectIndexedY
 
@@ -8574,7 +8580,7 @@ const test0xD1 = function() {
 
 // CMP ZeroPageX
 const test0xD5 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xD5
     const addressFunc = setZeroPageX
 
@@ -8643,7 +8649,7 @@ const test0xD5 = function() {
 
 // DEC ZeroPageX
 const test0xD6 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xD6
     const addressFunc = setZeroPageX
 
@@ -8689,7 +8695,7 @@ const test0xD6 = function() {
 
 // CLD Implied
 const test0xD8 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xD8
 
     let codes = [opcode]
@@ -8722,7 +8728,7 @@ const test0xD8 = function() {
 
 // CMP AbsoluteY
 const test0xD9 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xD9
     const addressFunc = setAbsoluteY
 
@@ -8791,7 +8797,7 @@ const test0xD9 = function() {
 
 // CMP AbsoluteX
 const test0xDD = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xDD
     const addressFunc = setAbsoluteX
 
@@ -8860,7 +8866,7 @@ const test0xDD = function() {
 
 // DEC AbsoluteX
 const test0xDE = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xDE
     const addressFunc = setAbsoluteX
 
@@ -8906,7 +8912,7 @@ const test0xDE = function() {
 
 // CPX Immediate
 const test0xE0 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xE0
 
     let codes = [opcode]
@@ -8971,7 +8977,7 @@ const test0xE0 = function() {
 
 // SBC IndexedIndirectX
 const test0xE1 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xE1
     const addressFunc =  setIndexedIndirectX
 
@@ -9216,7 +9222,7 @@ const test0xE1 = function() {
 
 // CPX ZeroPage
 const test0xE4 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xE4
     const addressFunc = setZeroPage
 
@@ -9285,7 +9291,7 @@ const test0xE4 = function() {
 
 // SBC ZeroPage
 const test0xE5 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xE5
     const addressFunc =  setZeroPage
 
@@ -9529,7 +9535,7 @@ const test0xE5 = function() {
 
 // INC ZeroPage
 const test0xE6 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xE6
     const addressFunc = setZeroPage
 
@@ -9575,7 +9581,7 @@ const test0xE6 = function() {
 
 // INX Implied
 const test0xE8 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xE8
 
     let codes = [opcode]
@@ -9618,7 +9624,7 @@ const test0xE8 = function() {
 
 // SBC Immediate
 const test0xE9 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xE9
 
     let codes = [opcode]
@@ -9853,7 +9859,7 @@ const test0xE9 = function() {
 
 // CPX Absolute
 const test0xEC = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xEC
     const addressFunc = setAbsolute
 
@@ -9922,7 +9928,7 @@ const test0xEC = function() {
 
 // SBC Absolute
 const test0xED = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xED
     const addressFunc =  setAbsolute
 
@@ -10166,7 +10172,7 @@ const test0xED = function() {
 
 // INC Absolute
 const test0xEE = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xEE
     const addressFunc = setAbsolute
 
@@ -10212,7 +10218,7 @@ const test0xEE = function() {
 
 // BEQ Relative
 const test0xF0 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xF0
     let addressFunc = setRelativeBackwards
 
@@ -10266,7 +10272,7 @@ const test0xF0 = function() {
 
 // SBC IndirectIndexedY
 const test0xF1 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xF1
     const addressFunc =  setIndirectIndexedY
 
@@ -10510,7 +10516,7 @@ const test0xF1 = function() {
 
 // SBC ZeroPageX
 const test0xF5 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xF5
     const addressFunc =  setZeroPageX
 
@@ -10754,7 +10760,7 @@ const test0xF5 = function() {
 
 // INC ZeroPageX
 const test0xF6 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xF6
     const addressFunc = setZeroPageX
 
@@ -10800,7 +10806,7 @@ const test0xF6 = function() {
 
 // SED Implied
 const test0xF8 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
 
     let codes = [0xF8]
     cpu.loadROM(codes)
@@ -10818,7 +10824,7 @@ const test0xF8 = function() {
 
 // SBC AbsoluteY
 const test0xF9 = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xF9
     const addressFunc =  setAbsoluteY
 
@@ -11062,7 +11068,7 @@ const test0xF9 = function() {
 
 // SBC AbsoluteX
 const test0xFD = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xFD
     const addressFunc =  setAbsoluteX
 
@@ -11306,7 +11312,7 @@ const test0xFD = function() {
 
 // INC AbsoluteX
 const test0xFE = function() {
-    const cpu = CPU.new()
+    const cpu = getCPUInstance()
     let opcode = 0xFE
     const addressFunc = setAbsoluteX
 
