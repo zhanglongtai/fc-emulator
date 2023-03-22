@@ -6,8 +6,8 @@ export const enum RegisterCPU {
 
     // SP：Stack Pointer，堆栈指针，也是通用寄存器，用于入栈和出栈操作。
     SP = 'SP',
-    P = 'P',
-    A = 'A',
+    P = 'P', // 是否进位
+    A = 'A', // 累加
     X = 'X',
     Y = 'Y',
 }
