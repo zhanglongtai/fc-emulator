@@ -121,4 +121,77 @@ describe('cpu instruction', () => {
             expect(output).deep.eq(except)
         })
     })
+
+    describe('ORA ZeroPage', () => {
+        let codes, v, a, output, except
+        it('test 0x05 ORA ZeroPage 1', () => {
+            codes = [0x05, 0x3e]
+            cpu.loadROM(codes)
+            // 最后和A比较的值为0x6E
+            v = 0x6e
+            cpu.setValue(0x3e, v)
+            // A的初始值
+            a = 0x00
+            cpu.setRegister(RegisterCPU.A, a)
+            cpu.run()
+
+            output = {
+                a: cpu.getRegister(RegisterCPU.A),
+                n: cpu.getFlagN(),
+                z: cpu.getFlagZ(),
+            }
+            except = {
+                a: a | v,
+                n: 0,
+                z: 0,
+            }
+            expect(output).deep.eq(except)
+        })
+        it('test 0x05 ORA ZeroPage 2', () => {
+            codes = [0x01, 0x3e]
+            cpu.loadROM(codes)
+            // 最后和A比较的值为0x6E
+            v = 0x6e
+            cpu.setValue(0x3e, v)
+            // A的初始值
+            a = 0xff
+            cpu.setRegister(RegisterCPU.A, a)
+            cpu.run()
+
+            output = {
+                a: cpu.getRegister(RegisterCPU.A),
+                n: cpu.getFlagN(),
+                z: cpu.getFlagZ(),
+            }
+            except = {
+                a: a | v,
+                n: 1,
+                z: 0,
+            }
+            expect(output).deep.eq(except)
+        })
+        it('test 0x05 ORA ZeroPage 3', () => {
+            codes = [0x01, 0x3e]
+            cpu.loadROM(codes)
+            // 最后和A比较的值为0x6E
+            v = 0x00
+            cpu.setValue(0x3e, v)
+            // A的初始值
+            a = 0x00
+            cpu.setRegister(RegisterCPU.A, a)
+            cpu.run()
+
+            output = {
+                a: cpu.getRegister(RegisterCPU.A),
+                n: cpu.getFlagN(),
+                z: cpu.getFlagZ(),
+            }
+            except = {
+                a: a | v,
+                n: 0,
+                z: 1,
+            }
+            expect(output).deep.eq(except)
+        })
+    })
 })
