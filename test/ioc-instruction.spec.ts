@@ -194,4 +194,51 @@ describe('cpu instruction', () => {
             expect(output).deep.eq(except)
         })
     })
+
+    describe('ASL ZeroPage', () => {
+        let codes, v, a, output, except
+        it('test 0x06 ASL ZeroPage 1', () => {
+            codes = [0x06, 0x3e]
+            cpu.loadROM(codes)
+            v = 0x1
+            cpu.setValue(0x3e, v)
+            cpu.run()
+
+            output = {
+                value: cpu.getValue(0x3e),
+                c: cpu.getFlagC(),
+                n: cpu.getFlagN(),
+                z: cpu.getFlagZ(),
+            }
+            except = {
+                value: 0x2,
+                c: 0,
+                n: 0,
+                z: 0,
+            }
+            expect(output).deep.eq(except)
+        })
+        it('test 0x06 ASL ZeroPage 2', () => {
+            codes = [0x06, 0x3e]
+            cpu.loadROM(codes)
+            // 最后和A比较的值为0x6E
+            v = 0x89 // 1000 1001
+            cpu.setValue(0x3e, v)
+            cpu.run()
+
+            output = {
+                value: cpu.getValue(0x3e),
+                c: cpu.getFlagC(),
+                n: cpu.getFlagN(),
+                z: cpu.getFlagZ(),
+            }
+            except = {
+                value: 0x12,
+                c: 1,
+                n: 0,
+                z: 0,
+            }
+            expect(output).deep.eq(except)
+        })
+    })
 })
