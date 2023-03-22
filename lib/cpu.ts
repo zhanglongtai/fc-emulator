@@ -41,13 +41,37 @@ const flagBit = {
 
 @injectable()
 export class CPU {
-    /**
-     * @param { DataBus } dataBus - DataBus实例
-     */
-    constructor(dataBus: DataBus) {
-        this.dataBus = dataBus
-        this.init()
+    // 内存大小
+    private memory = new Array(1024 * 64) // 64KB
+    // 内存分配
+    private indexOfInternalRAM = 0x0000 // size $0800, 2KB internal RAM $0000-$07FF
+    private indexStackHigh = 0x01ff // stack 0x0100 - 0x01FF
+    private indexStackLow = 0x0100
+
+    // Mirrors of $0000-$07FF
+    private indexOfMirror1 = 0x0800 // $0800-$0FFF, size $0800
+    private indexOfMirror2 = 0x1000 // $1000-$17FF, size $0800
+    private indexOfMirror3 = 0x1800 // $1800-$1FFF, size $0800
+    private indexOfPPURegisters = 0x2000 // $2000-$2007, size $0008
+    private indexOfMirror4 = 0x2008 // Mirrors of $2000-2007 (repeats every 8 bytes)
+    private indexOfAPUReigsters = 0x4000 // $4000-$4017	$0018	NES APU and I/O registers
+    private indexOfAPUFunctionality = 0x4018 // $4018-$401F	$0008	APU and I/O functionality that is normally disabled. See CPU Test Mode.
+
+    // Cartridge space: PRG ROM, PRG RAM, and mapper registers (See Note)
+    private indexCartridge = 0x4020 // $4020-$FFFF, size $BFE0
+    private indexPRGROM = 0x8000
+    // 存放初始PC的地址
+    private indexStartAddress = 0xfffc
+    // 寄存器
+    private register = {
+        [RegisterCPU.PC]: this.indexPRGROM, // PC寄存器(Program Counter)
+        [RegisterCPU.SP]: 0xff, // SP寄存器(Stack Pointer)
+        [RegisterCPU.P]: 0x00, // P寄存器(Processor Status)
+        [RegisterCPU.A]: 0x00, // A寄存器
+        [RegisterCPU.X]: 0x00, // X寄存器
+        [RegisterCPU.Y]: 0x00, // Y寄存器
     }
+    constructor(private dataBus: DataBus, private inspector: Inspector) {}
 
     init() {
         // 内存大小
@@ -83,7 +107,7 @@ export class CPU {
         }
     }
 
-    setMemoryBlock(index, data) {
+    setMemoryBlock(index: any, data: any) {
         // let l = data.length
         // let m1 = this.memory.slice(0, index)
         // let m2 = this.memory.slice(index + l)
@@ -92,7 +116,7 @@ export class CPU {
         this.dataBus.setMemoryBlockCPU(index, data)
     }
 
-    loadROM(rom) {
+    loadROM(rom: any) {
         this.setMemoryBlock(this.indexPRGROM, rom)
     }
 
@@ -101,7 +125,7 @@ export class CPU {
         return data
     }
 
-    getRegister(register) {
+    getRegister(register: RegisterCPU) {
         let r = this.register[register]
         return r
     }
@@ -116,11 +140,11 @@ export class CPU {
     }
 
     // position: 0 ~ 7
-    getBit(value, bitPosition) {
+    getBit(value: any, bitPosition: any) {
         let bit = (value >> bitPosition) & 1
         return bit
     }
-    setBit(value, bit, bitPosition) {
+    setBit(value: any, bit: any, bitPosition: any) {
         let str = binaryStringFromNumber(value)
         let r = ''
         for (let i = 0; i < str.length; i++) {
@@ -134,13 +158,13 @@ export class CPU {
         return parseInt(r, 2)
     }
 
-    getFlag(flag) {
+    getFlag(flag: any) {
         let p = this.getRegister(RegisterCPU.P)
         let bitPosition = flagBit[flag]
         let n = this.getBit(p, bitPosition)
         return n
     }
-    setFlag(flag, bit) {
+    setFlag(flag: any, bit: any) {
         let p = this.getRegister(RegisterCPU.P)
         let bitPosition = flagBit[flag]
         p = this.setBit(p, bit, bitPosition)
@@ -151,7 +175,7 @@ export class CPU {
         let s = this.getFlag(Flag.C)
         return s
     }
-    setFlagCByValue(value) {
+    setFlagCByValue(value: any) {
         let c = this.getBit(value, 8)
         this.setFlag(Flag.C, c)
     }
@@ -160,7 +184,7 @@ export class CPU {
         let s = this.getFlag(Flag.Z)
         return s
     }
-    setFlagZByValue(value) {
+    setFlagZByValue(value: any) {
         let v = byteTrimmed(value)
         if (v === 0x00) {
             this.setFlag(Flag.Z, 1)
@@ -188,29 +212,28 @@ export class CPU {
         let s = this.getFlag(Flag.V)
         return s
     }
-    setFlagVByValue(value) {}
+    setFlagVByValue(value: any) {}
 
     getFlagN() {
         let s = this.getFlag(Flag.N)
         return s
     }
-    setFlagNByValue(value) {
+    setFlagNByValue(value: any) {
         let v = byteTrimmed(value)
         let n = this.getBit(v, 7)
         this.setFlag(Flag.N, n)
     }
 
-    getValue(address) {
-        let v = this.dataBus.readCPU(address)
-        return v
+    getValue(address: number) {
+        return this.dataBus.readCPU(address)
     }
-    get2Bytes(address) {
+    get2Bytes(address: any) {
         let low = this.getValue(address)
         let high = this.getValue(address + 1)
         let v = (high << 8) + low
         return v
     }
-    setValue(address, value) {
+    setValue(address: any, value: any) {
         this.dataBus.writeCPU(address, value)
     }
 
@@ -223,7 +246,7 @@ export class CPU {
         let sp = this.getRegister(RegisterCPU.SP)
         // 如果超出了最小值，则转到最大值重新开始
         if (sp === 0x00) {
-            log('[warning] increase stack overflow.')
+            this.inspector.log('[warning] increase stack overflow.')
             sp = 0xff
         } else {
             sp -= 1
@@ -232,6 +255,7 @@ export class CPU {
         this.setRegister(RegisterCPU.SP, sp)
     }
     decreaseStackPointer() {
+        let sp = this.getRegister(RegisterCPU.SP)
         // 如果超出了最大值，则转到最小值重新开始
         if (sp === 0xff) {
             this.inspector.log('[warning] decrease stack overflow.')
@@ -243,7 +267,7 @@ export class CPU {
         this.setRegister(RegisterCPU.SP, sp)
     }
 
-    pushStack(value) {
+    pushStack(value: any) {
         let address = this.getStackPointer()
         this.setValue(address, value)
         this.increaseStackPointer()
@@ -255,7 +279,7 @@ export class CPU {
         return v
     }
 
-    getAddress(addressMode) {
+    getAddress(addressMode: any) {
         let mode = addressMode
         if (mode === AddressingMode.Immediate) {
             return null
@@ -334,7 +358,7 @@ export class CPU {
         }
     }
 
-    getAddressAndValueByAddressMode(mode) {
+    getAddressAndValueByAddressMode(mode: any) {
         let value = null
         let address = null
         if (mode === AddressingMode.Accumulator) {
@@ -365,7 +389,7 @@ export class CPU {
 
     // ===== Memory Operations =====
     // LoaD Accumulator
-    LDA(opcodeInfo) {
+    LDA(opcodeInfo: any) {
         let mode = opcodeInfo.addressingMode
         let r = this.getAddressAndValueByAddressMode(mode)
         let value = r.value
@@ -376,7 +400,7 @@ export class CPU {
     }
 
     // LoaD X
-    LDX(opcodeInfo) {
+    LDX(opcodeInfo: any) {
         let mode = opcodeInfo.addressingMode
         let r = this.getAddressAndValueByAddressMode(mode)
         let value = r.value
@@ -387,7 +411,7 @@ export class CPU {
     }
 
     // LoaD Y
-    LDY(opcodeInfo) {
+    LDY(opcodeInfo: any) {
         let mode = opcodeInfo.addressingMode
         let r = this.getAddressAndValueByAddressMode(mode)
         let value = r.value
@@ -398,21 +422,21 @@ export class CPU {
     }
 
     // STore Accumulator
-    STA(opcodeInfo) {
+    STA(opcodeInfo: any) {
         let address = this.getAddress(opcodeInfo.addressingMode)
         let a = this.getRegister(RegisterCPU.A)
         this.setValue(address, a)
     }
 
     // STore X
-    STX(opcodeInfo) {
+    STX(opcodeInfo: any) {
         let address = this.getAddress(opcodeInfo.addressingMode)
         let x = this.getRegister(RegisterCPU.X)
         this.setValue(address, x)
     }
 
     // STore Y
-    STY(opcodeInfo) {
+    STY(opcodeInfo: any) {
         let address = this.getAddress(opcodeInfo.addressingMode)
         let y = this.getRegister(RegisterCPU.Y)
         this.setValue(address, y)
@@ -496,7 +520,7 @@ export class CPU {
 
     // ===== Logical Operations =====
     // Logic AND
-    AND(opcodeInfo) {
+    AND(opcodeInfo: any) {
         let mode = opcodeInfo.addressingMode
         let r = this.getAddressAndValueByAddressMode(mode)
         let value = r.value
@@ -509,7 +533,7 @@ export class CPU {
     }
 
     // Exclusive OR
-    EOR(opcodeInfo) {
+    EOR(opcodeInfo: any) {
         let mode = opcodeInfo.addressingMode
         let r = this.getAddressAndValueByAddressMode(mode)
         let value = r.value
@@ -522,7 +546,7 @@ export class CPU {
     }
 
     // Logical OR on Accumulator
-    ORA(opcodeInfo) {
+    ORA(opcodeInfo: any) {
         let mode = opcodeInfo.addressingMode
         let r = this.getAddressAndValueByAddressMode(mode)
         let value = r.value
@@ -537,7 +561,7 @@ export class CPU {
 
     // ===== Arithmetic Operations =====
     // ADd with Carry
-    ADC(opcodeInfo) {
+    ADC(opcodeInfo: any) {
         let mode = opcodeInfo.addressingMode
         let result = this.getAddressAndValueByAddressMode(mode)
         let value = result.value
@@ -567,7 +591,7 @@ export class CPU {
     }
 
     // DECrease
-    DEC(opcodeInfo) {
+    DEC(opcodeInfo: any) {
         let mode = opcodeInfo.addressingMode
         let result = this.getAddressAndValueByAddressMode(mode)
         let value = result.value
@@ -613,7 +637,7 @@ export class CPU {
     }
 
     // INCrease
-    INC(opcodeInfo) {
+    INC(opcodeInfo: any) {
         let mode = opcodeInfo.addressingMode
         let result = this.getAddressAndValueByAddressMode(mode)
         let value = result.value
@@ -631,7 +655,7 @@ export class CPU {
     }
 
     // INcrease X
-    INX(opcodeInfo) {
+    INX(opcodeInfo: any) {
         let x = this.getRegister(RegisterCPU.X)
         if (x === 0xff) {
             x = 0
@@ -659,7 +683,7 @@ export class CPU {
     }
 
     // SuBtract with Carry
-    SBC(opcodeInfo) {
+    SBC(opcodeInfo: any) {
         let mode = opcodeInfo.addressingMode
         let result = this.getAddressAndValueByAddressMode(mode)
         let value = result.value
@@ -687,7 +711,7 @@ export class CPU {
 
     // ===== Bit Manipulation Operations =====
     // Arithmetic Shift Left
-    ASL(opcodeInfo) {
+    ASL(opcodeInfo: any) {
         let mode = opcodeInfo.addressingMode
         let r = this.getAddressAndValueByAddressMode(mode)
         let value = r.value
@@ -706,7 +730,7 @@ export class CPU {
     }
 
     // Logic Shift Right
-    LSR(opcodeInfo) {
+    LSR(opcodeInfo: any) {
         let mode = opcodeInfo.addressingMode
         let r = this.getAddressAndValueByAddressMode(mode)
         let value = r.value
@@ -726,7 +750,7 @@ export class CPU {
     }
 
     // ROtate Left
-    ROL(opcodeInfo) {
+    ROL(opcodeInfo: any) {
         let mode = opcodeInfo.addressingMode
         let r = this.getAddressAndValueByAddressMode(mode)
         let value = r.value
@@ -750,7 +774,7 @@ export class CPU {
     }
 
     // ROtate Right
-    ROR(opcodeInfo) {
+    ROR(opcodeInfo: any) {
         let mode = opcodeInfo.addressingMode
         let r = this.getAddressAndValueByAddressMode(mode)
         let value = r.value
@@ -777,13 +801,13 @@ export class CPU {
 
     // ===== Subroutine Operations =====
     // JuMP
-    JMP(opcodeInfo) {
+    JMP(opcodeInfo: any) {
         let address = this.getAddress(opcodeInfo.addressingMode)
         this.setRegister(RegisterCPU.PC, address)
     }
 
     // Jump to SubRoutine
-    JSR(opcodeInfo) {
+    JSR(opcodeInfo: any) {
         let mode = opcodeInfo.addressingMode
         let address = this.getAddress(mode)
 
@@ -821,7 +845,7 @@ export class CPU {
 
     // ===== Comparison Operations =====
     // BIT test
-    BIT(opcodeInfo) {
+    BIT(opcodeInfo: any) {
         let mode = opcodeInfo.addressingMode
         let address = this.getAddress(mode)
         let value = this.getValue(address)
@@ -838,7 +862,7 @@ export class CPU {
     }
 
     // CoMPare
-    CMP(opcodeInfo) {
+    CMP(opcodeInfo: any) {
         let mode = opcodeInfo.addressingMode
         let r = this.getAddressAndValueByAddressMode(mode)
         let value = r.value
@@ -852,7 +876,7 @@ export class CPU {
     }
 
     // ComPare X
-    CPX(opcodeInfo) {
+    CPX(opcodeInfo: any) {
         let mode = opcodeInfo.addressingMode
         let r = this.getAddressAndValueByAddressMode(mode)
         let value = r.value
@@ -866,7 +890,7 @@ export class CPU {
     }
 
     // ComPare Y
-    CPY(opcodeInfo) {
+    CPY(opcodeInfo: any) {
         let mode = opcodeInfo.addressingMode
         let r = this.getAddressAndValueByAddressMode(mode)
         let value = r.value
@@ -882,7 +906,7 @@ export class CPU {
 
     // ===== Branching Operations =====
     // Branch if Carry is Clear
-    BCC(opcodeInfo) {
+    BCC(opcodeInfo: any) {
         let address = this.getAddress(opcodeInfo.addressingMode)
 
         let c = this.getFlagC()
@@ -892,7 +916,7 @@ export class CPU {
     }
 
     // Branch if Carry is Set
-    BCS(opcodeInfo) {
+    BCS(opcodeInfo: any) {
         let address = this.getAddress(opcodeInfo.addressingMode)
 
         let c = this.getFlagC()
@@ -902,7 +926,7 @@ export class CPU {
     }
 
     // Branch if EQual
-    BEQ(opcodeInfo) {
+    BEQ(opcodeInfo: any) {
         let address = this.getAddress(opcodeInfo.addressingMode)
 
         let z = this.getFlagZ()
@@ -912,7 +936,7 @@ export class CPU {
     }
 
     // Branch if MInus
-    BMI(opcodeInfo) {
+    BMI(opcodeInfo: any) {
         let address = this.getAddress(opcodeInfo.addressingMode)
 
         let n = this.getFlagN()
@@ -922,7 +946,7 @@ export class CPU {
     }
 
     // Branch if Not Equal
-    BNE(opcodeInfo) {
+    BNE(opcodeInfo: any) {
         let address = this.getAddress(opcodeInfo.addressingMode)
 
         let z = this.getFlagZ()
@@ -932,7 +956,7 @@ export class CPU {
     }
 
     // Branch if oVerflow Clear
-    BVC(opcodeInfo) {
+    BVC(opcodeInfo: any) {
         let address = this.getAddress(opcodeInfo.addressingMode)
 
         let v = this.getFlagV()
@@ -942,7 +966,7 @@ export class CPU {
     }
 
     // Branch if oVerflow Set
-    BVS(opcodeInfo) {
+    BVS(opcodeInfo: any) {
         let address = this.getAddress(opcodeInfo.addressingMode)
 
         let v = this.getFlagV()
@@ -952,7 +976,7 @@ export class CPU {
     }
 
     // Branch if PLus
-    BPL(opcodeInfo) {
+    BPL(opcodeInfo: any) {
         let address = this.getAddress(opcodeInfo.addressingMode)
 
         let n = this.getFlagN()
@@ -1064,7 +1088,7 @@ export class CPU {
 
     run() {
         // this.printCPU()
-        log('===== start =====')
+        this.inspector.log('===== start =====')
         let pc = this.getRegister(RegisterCPU.PC)
         let opcode = this.getValue(pc)
 
@@ -1074,11 +1098,11 @@ export class CPU {
             this.executeInstruction(c)
             this.printCPU()
         }
-        log('===== end =====')
-        log('')
+        this.inspector.log('===== end =====')
+        this.inspector.log('')
     }
 
-    formattedAddressCode(opInfo) {
+    formattedAddressCode(opInfo: any) {
         let s = ''
         let pc = this.getRegister(RegisterCPU.PC)
         if (opInfo.addressingMode === AddressingMode.Immediate) {
@@ -1130,13 +1154,13 @@ export class CPU {
         return s
     }
 
-    formattedInstruction(opInfo) {
+    formattedInstruction(opInfo: any) {
         let params = this.formattedAddressCode(opInfo)
         let s = `${opInfo.name} ${params}`
         return s
     }
 
-    formattedCode(opInfo) {
+    formattedCode(opInfo: any) {
         let s = ''
         let code = opInfo.code
         code = hexStringFromNumber(code)
@@ -1158,34 +1182,30 @@ export class CPU {
         return s
     }
 
-    printCode(opcodeInfo) {
+    printCode(opcodeInfo: any) {
         let codeString = this.formattedCode(opcodeInfo)
         codeString = stringFixedLength(codeString, 15)
         let asmString = this.formattedInstruction(opcodeInfo)
         asmString = stringFixedLength(asmString, 15)
-        log(`Code: ${codeString} | ${asmString}`)
+        this.inspector.log(`Code: ${codeString} | ${asmString}`)
     }
 
     printCPU() {
-        let a = this.getRegister(RegisterCPU.A)
-        a = hexStringFromNumber(a)
+        const a = hexStringFromNumber(this.getRegister(RegisterCPU.A))
 
-        let x = this.getRegister(RegisterCPU.X)
-        x = hexStringFromNumber(x)
+        const x = hexStringFromNumber(this.getRegister(RegisterCPU.X))
 
-        let y = this.getRegister(RegisterCPU.Y)
-        y = hexStringFromNumber(y)
+        const y = hexStringFromNumber(this.getRegister(RegisterCPU.Y))
 
-        let pc = this.getRegister(RegisterCPU.PC)
-        pc = hexStringFromNumber(pc)
+        const pc = hexStringFromNumber(this.getRegister(RegisterCPU.PC))
 
-        let sp = this.getRegister(RegisterCPU.SP)
-        sp = hexStringFromNumber(sp)
+        const sp = hexStringFromNumber(this.getRegister(RegisterCPU.SP))
 
-        let p = this.getRegister(RegisterCPU.P)
-        p = binaryStringFromNumber(p)
+        const p = binaryStringFromNumber(this.getRegister(RegisterCPU.P))
 
-        log(`CPU: A: ${a}, X: ${x}, Y: ${y}, PC: ${pc}, SP: ${sp}, P: ${p}`)
+        this.inspector.log(
+            `CPU: A: ${a}, X: ${x}, Y: ${y}, PC: ${pc}, SP: ${sp}, P: ${p}`
+        )
 
         let stack = this.dataBus.getMemoryBlockCPU(
             this.indexStackLow,
@@ -1195,16 +1215,16 @@ export class CPU {
             let i = hexStringFromNumber(item)
             return i
         })
-        log('Stack', stack)
+        this.inspector.log('Stack', stack)
         let zeroPage = this.dataBus.getMemoryBlockCPU(0, 0xff)
         zeroPage = zeroPage.map((item) => {
             let i = hexStringFromNumber(item)
             return i
         })
-        log('ZeroPage: ', zeroPage)
+        this.inspector.log('ZeroPage: ', zeroPage)
     }
 
-    executeInstruction(opcode) {
+    executeInstruction(opcode: any) {
         let opInfo = opcodes[opcode]
         this.printCode(opInfo)
         // TODO: 这里应该将指令映射到具体执行的函数

@@ -1,7 +1,7 @@
 const log = console.log.bind(console)
 
-const isEven = function(number) {
-    let even = (number % 2) === 0
+const isEven = function (number) {
+    let even = number % 2 === 0
     return even
 }
 
@@ -9,7 +9,7 @@ const isEven = function(number) {
 export const stringFixedLength = function (str: string, length: number) {
     let s = String(str)
     if (str.length < length) {
-        for (let i = 0; i < (length - str.length); i++) {
+        for (let i = 0; i < length - str.length; i++) {
             s += ' '
         }
     }
@@ -17,7 +17,7 @@ export const stringFixedLength = function (str: string, length: number) {
     return s
 }
 
-const stringFromBinaryArray = function(array) {
+const stringFromBinaryArray = function (array) {
     let s = ''
     for (let i of array) {
         if (i === 26) {
@@ -30,7 +30,7 @@ const stringFromBinaryArray = function(array) {
     return s
 }
 
-const flagsFormatted = function(num) {
+const flagsFormatted = function (num) {
     // '1010'
     let binaryStr = Number(num).toString(2)
     // 空位补0
@@ -51,8 +51,8 @@ const flagsFormatted = function(num) {
     return f
 }
 
-const getBitFromByte = function(byte, bitPosition) {
-    let bit = byte >> (bitPosition) & 1
+const getBitFromByte = function (byte, bitPosition) {
+    let bit = (byte >> bitPosition) & 1
     return bit
 }
 
@@ -78,11 +78,11 @@ export const hexStringFromNumber = function (num: number) {
 }
 
 // 保留最低的byte
-const byteTrimmed = function(value) {
-    if (value <= 0xFF) {
+export const byteTrimmed = function (value: number) {
+    if (value <= 0xff) {
         return value
     } else {
-        let v = value & 0xFF
+        let v = value & 0xff
         return v
     }
 }
@@ -94,7 +94,7 @@ export const signedNumberFromByte = function (byte) {
         v = -v
         return v
     } else {
-        return  byte
+        return byte
     }
 }
 
@@ -162,7 +162,7 @@ export const positiveByteFromMinus = function (value) {
     return p
 }
 
-const ensure = function(condition, except, output, title = '') {
+const ensure = function (condition, except, output, title = '') {
     if (condition) {
         log(`${title} passed.`)
     } else {

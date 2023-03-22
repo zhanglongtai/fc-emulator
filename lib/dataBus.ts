@@ -1,4 +1,5 @@
 import { injectable } from 'inversify'
+import { byteTrimmed } from './utils'
 const Hardware = {
     CPU: 'CPU',
     PPU: 'PPU',
