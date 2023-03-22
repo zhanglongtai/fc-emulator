@@ -241,4 +241,22 @@ describe('cpu instruction', () => {
             expect(output).deep.eq(except)
         })
     })
+
+    it('PHP Implied', () => {
+        let codes = [0x08]
+        cpu.loadROM(codes)
+        let v = 0x1
+        cpu.setRegister(RegisterCPU.P, v)
+        cpu.run()
+
+        let output = {
+            sp: cpu.getRegister(RegisterCPU.SP),
+            v: cpu.getValue(cpu.getStackPointer() + 1),
+        }
+        let except = {
+            sp: 0xff - 1,
+            v: v,
+        }
+        expect(output).deep.eq(except, 'test 0x08 PHP Implied 1')
+    })
 })
