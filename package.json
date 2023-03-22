@@ -1,0 +1,23 @@
+{
+  "name": "fc-emulator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zhanglongtai/fc-emulator"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zhanglongtai/fc-emulator"
+  },
+  "homepage": "https://github.com/zhanglongtai/fc-emulator#readme"
+}
