@@ -1,4 +1,4 @@
-const AddressingMode = {
+export const AddressingMode = {
     Implied: 'Implied', // 隐含模式
     Accumulator: 'Accumulator', // 累加器 A
     Immediate: 'Immediate', // 快速模式 #Operand
@@ -14,7 +14,7 @@ const AddressingMode = {
     IndirectIndexedY: 'IndirectIndexedY', // (Operand),Y
 }
 
-const opcodes = [
+export const opcodes = [
     // BRK(BReaKpoint)
     {
         code: 0x00,
