@@ -272,4 +272,28 @@ class PPU {
             }
         }
     }
+
+    renderTestGame(component) {
+        let data = component.getScreen()
+
+        let x = 0
+        let y = 0
+        let color = 0
+        let width = 32
+        let height = 32
+        let size = 10
+        for (let i = 0; i < width; i++) {
+            for (let j = 0; j < height; j++) {
+                let n = i * width + j
+                color = data[n] || 0
+                x = j
+                y = i
+
+                let x1 = x * size
+                let y1 = y * size
+                this.canvas.fillStyle = colorMap[color]
+                this.canvas.fillRect(x1, y1, size, size);
+            }
+        }
+    }
 }

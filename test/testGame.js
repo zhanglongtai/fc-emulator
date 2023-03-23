@@ -99,17 +99,19 @@ const testGame3 = function() {
 
     const fc = Famicom.new()
 
-    const cpu = CPU.new()
-    cpu.setMemoryBlock(gameCodes, 0x0600)
+    const dataBus = DataBus.new()
+    const cpu = CPU.new(dataBus)
+    cpu.setMemoryBlock(0x0600, gameCodes)
     cpu.setRegister(RegisterCPU.PC, 0x0600)
 
     const ppu = PPU.new()
 
     fc.update = function() {
+        cpu.setValue(0xFE, Math.floor(Math.random() * 11) + 1)
         cpu.run()
     }
     fc.render = function() {
-        ppu.render(cpu)
+        ppu.renderTestGame(cpu)
     }
 
     window.addEventListener('keydown', (event) => {
@@ -118,7 +120,7 @@ const testGame3 = function() {
             fc.runLoop()
         }
         if (event.code === 'KeyP') {
-            fc.paused = true
+            fc.paused = !fc.paused
         }
 
         if (event.code === 'KeyW') {
@@ -141,7 +143,7 @@ const testGame3 = function() {
 const testGame = function() {
     // testGame1()
     // testGame2()
-    // testGame3()
+    testGame3()
 }
 
 testGame()
