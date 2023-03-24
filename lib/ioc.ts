@@ -4,6 +4,7 @@ import { Famicom } from './famicom'
 import { DataBus } from './dataBus'
 import { CPU } from './cpu'
 import { Inspector } from './inspector'
+import { PPU } from './ppu'
 
 export function createIOC() {
     const container = new Container()
@@ -11,6 +12,7 @@ export function createIOC() {
     container.bind(DataBus).toSelf().inSingletonScope()
     container.bind(CPU).toSelf().inSingletonScope()
     container.bind(Inspector).toSelf().inSingletonScope()
+    container.bind(PPU).toSelf().inSingletonScope()
 
     return container
 }

@@ -51,7 +51,7 @@ const flagsFormatted = function (num) {
     return f
 }
 
-const getBitFromByte = function (byte, bitPosition) {
+export const getBitFromByte = function (byte: any, bitPosition: number) {
     let bit = (byte >> bitPosition) & 1
     return bit
 }

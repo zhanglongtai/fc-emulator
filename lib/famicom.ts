@@ -1,7 +1,9 @@
 import { injectable } from 'inversify'
+import { Inspector } from './inspector'
 
 @injectable()
 export class Famicom {
+    constructor(private inspector: Inspector) {}
     private paused: boolean = false
     private actions: Record<any, any> = {}
     private keydown: Record<any, any> = {}
@@ -23,7 +25,7 @@ export class Famicom {
         for (let i = 0; i < actions.length; i++) {
             let key = actions[i]
             if (this.keydown[key]) {
-                log(this.keydown[key], key)
+                this.inspector.log(this.keydown[key], key)
                 // 如果按键被按下, 调用注册的 action
                 this.actions[key]()
             }
