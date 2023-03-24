@@ -86,12 +86,6 @@ const setAbsoluteX = function (codes, cpu) {
   return 0x241a
 }
 
-const getCPUInstance = function () {
-  let dataBus = DataBus.new()
-  let cpu = CPU.new(dataBus)
-  return cpu
-}
-
 describe("cpu instruction", () => {
   let ioc: ReturnType<typeof createIOC>
   let cpu: CPU

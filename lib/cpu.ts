@@ -1,4 +1,4 @@
-import { injectable } from 'inversify'
+import { inject, injectable } from 'inversify'
 import { DataBus } from './dataBus'
 import { RegisterCPU } from './const'
 import {
@@ -71,7 +71,10 @@ export class CPU {
         [RegisterCPU.X]: 0x00, // X寄存器
         [RegisterCPU.Y]: 0x00, // Y寄存器
     }
-    constructor(private dataBus: DataBus, private inspector: Inspector) {}
+    constructor(
+        @inject(DataBus) private dataBus: DataBus,
+        @inject(Inspector) private inspector: Inspector
+    ) {}
 
     init() {
         // 内存大小
