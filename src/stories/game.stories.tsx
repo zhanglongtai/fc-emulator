@@ -41,6 +41,7 @@ const snakeGame3 = (nes: NES, context2D: CanvasRenderingContext2D) => {
         0x60, 0xa2, 0x00, 0xea, 0xea, 0xca, 0xd0, 0xfb, 0x60,
     ]
     const fc = nes.getFamicom()
+    nes.disableLog()
     const cpu = nes.getCPU()
     cpu.setMemoryBlock(0x0600, gameCodes)
     cpu.setRegister(RegisterCPU.PC, 0x0600)

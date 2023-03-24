@@ -1,4 +1,5 @@
-import { CPU, createIOC, Famicom, PPU } from './index'
+import { CPU, createIOC, Famicom, PPU, EventBus } from './index'
+import { Inspector } from './inspector'
 
 export class NES {
     #ioc = createIOC()
@@ -13,6 +14,13 @@ export class NES {
     public getFamicom() {
         return this.#ioc.get(Famicom)
     }
+    public destroy() {
+        return this.#ioc.get(EventBus).emit('destroy')
+    }
+    public disableLog() {
+        return this.#ioc.get(Inspector).disabledLog()
+    }
+
     // end 这是一个过渡的方案
 }
 
