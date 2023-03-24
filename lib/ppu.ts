@@ -1,4 +1,4 @@
-import { injectable } from 'inversify'
+import { inject, injectable } from 'inversify'
 import { DataBus } from './dataBus'
 import { Inspector } from './inspector'
 import { getBitFromByte } from './utils'
@@ -208,7 +208,10 @@ export class PPU {
 
     // 初始化屏幕
     private context2D: CanvasRenderingContext2D | null = null
-    constructor(private dataBus: DataBus, private inspector: Inspector) {}
+    constructor(
+        @inject(DataBus) private dataBus: DataBus,
+        @inject(Inspector) private inspector: Inspector
+    ) {}
 
     // 临时方案，将渲染载体放到 ppu 内部
     public setContext2D(nextContext2D: CanvasRenderingContext2D) {

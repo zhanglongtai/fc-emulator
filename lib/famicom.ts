@@ -1,9 +1,9 @@
-import { injectable } from 'inversify'
+import { injectable, inject } from 'inversify'
 import { Inspector } from './inspector'
 
 @injectable()
 export class Famicom {
-    constructor(private inspector: Inspector) {}
+    constructor(@inject(Inspector) private inspector: Inspector) {}
     private paused: boolean = false
     private actions: Record<any, any> = {}
     private keydown: Record<any, any> = {}
